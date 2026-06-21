@@ -1,0 +1,14 @@
+cat << 'EOF' > .gitignore
+# Dependencias
+**/node_modules/
+**/target/
+dist/
+build/
+
+# IDEs y Metadatos Locales
+.idea/
+.vscode/
+.gemini/
+*.local
+.env
+EOF

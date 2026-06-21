@@ -1,0 +1,695 @@
+.nursing-dashboard-container {
+  padding: 24px;
+  box-sizing: border-box;
+  background-color: var(--color-bg-clinical);
+  min-height: 100vh;
+  overflow: visible;
+}
+
+.dashboard-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #eef2f6;
+  padding-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.dashboard-title {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+/* Global Analytics Panel in Header */
+.global-analytics-panel {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header-metric-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  min-width: 130px;
+  height: 62px;
+  justify-content: space-between;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+  box-sizing: border-box;
+  position: relative;
+}
+
+.analytic-label {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.analytic-value-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  width: 100%;
+}
+
+.analytic-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.analytic-value.text-cherry {
+  color: #b91c1c;
+}
+
+.pulse-indicator {
+  color: #10b981;
+  font-size: 0.9rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: flash 1.2s infinite alternate;
+}
+
+.analytic-sparkline-box {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.global-sparkline {
+  overflow: visible;
+}
+
+.alerts-badge-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: auto;
+}
+
+.code-red-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.code-red-badge.pulsing-cherry {
+  background: linear-gradient(135deg, #9a0002 0%, #6f0001 100%);
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 2px 4px rgba(154, 0, 2, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  animation: cherryPulse 1.5s infinite alternate;
+}
+
+@keyframes cherryPulse {
+  0% {
+    opacity: 0.95;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 0 2px rgba(185, 28, 28, 0.1);
+  }
+  100% {
+    opacity: 1;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 0 8px rgba(185, 28, 28, 0.3);
+  }
+}
+
+.no-patients {
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.patients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+/* Patient Card Estilo Figma */
+.patient-card {
+  background: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #e2e8f0;
+  border-top-width: 5px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  pointer-events: auto;
+}
+
+.patient-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+}
+
+.patient-card * {
+  pointer-events: none;
+}
+
+/* Colores de Triage - Figma Theme */
+.patient-card.triage-critical {
+  border-color: #fee2e2;
+  border-top-color: #ef4444;
+}
+
+.patient-card.triage-urgent,
+.patient-card.triage-semi-urgent {
+  border-color: #fef3c7;
+  border-top-color: #f59e0b;
+}
+
+.patient-card.triage-non-urgent {
+  border-color: #d1fae5;
+  border-top-color: #10b981;
+}
+
+.card-header {
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.patient-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.patient-name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.patient-doc {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.triage-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.triage-badge.triage-critical {
+  background: #fee2e2;
+  color: #9a0002;
+  border: 1px solid rgba(154, 0, 2, 0.15);
+}
+
+.triage-badge.triage-urgent,
+.triage-badge.triage-semi-urgent {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid rgba(180, 83, 9, 0.15);
+}
+
+.triage-badge.triage-non-urgent {
+  background: #d1fae5;
+  color: #047857;
+  border: 1px solid rgba(4, 120, 87, 0.15);
+}
+
+.card-body {
+  padding: 16px 20px;
+  flex-grow: 1;
+}
+
+.clinical-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail-item {
+  display: flex;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #64748b;
+  width: 85px;
+  flex-shrink: 0;
+}
+
+.detail-value {
+  color: #1e293b;
+}
+
+.card-divider {
+  border: none;
+  border-top: 1px solid #f1f5f9;
+  margin: 14px 0;
+}
+
+/* metrics 2x2 Grid */
+.metrics-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px; /* Figma unified spacing */
+}
+
+.metric-box {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box;
+  justify-content: space-between;
+  min-height: 72px;
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.metric-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.3px;
+}
+
+.metric-arrow {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.metric-arrow.arrow-alert {
+  color: #ef4444;
+}
+
+.metric-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: 4px;
+  margin-bottom: 2px;
+  position: relative;
+  width: 100%;
+}
+
+.metric-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.metric-value.value-alert {
+  color: #b91c1c;
+  animation: pulseColor 1.5s infinite alternate;
+}
+
+.metric-unit {
+  font-size: 0.65rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.metric-sparkline-container {
+  margin-left: auto;
+  align-self: flex-end;
+  height: 24px;
+  width: 60px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.metric-sparkline {
+  overflow: visible;
+}
+
+.metric-bar-indicator {
+  height: 3px;
+  border-radius: 2px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.metric-bar-indicator.bar-normal {
+  background-color: #10b981;
+}
+
+.metric-bar-indicator.bar-alert {
+  background-color: #ef4444;
+}
+
+/* Fila Intermedia: ECG Wave y RR */
+.card-intermediate-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  gap: 16px; /* Unified to 16px gap */
+  margin-top: 16px;
+  margin-bottom: 0;
+  align-items: stretch;
+}
+
+.pleth-waveform-block {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: 65px;
+}
+
+.pleth-waveform-block.wave-critical {
+  background: linear-gradient(135deg, #2a0305 0%, #0f0203 100%);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.pleth-waveform-block.wave-critical .pleth-svg path {
+  stroke: #ff4d6d;
+  filter: drop-shadow(0 0 3px rgba(255, 77, 109, 0.8));
+}
+
+.pleth-waveform-block.wave-critical .waveform-status-badge {
+  color: #ff4d6d;
+  background: rgba(255, 77, 109, 0.15);
+}
+
+.pleth-waveform-block.wave-stable {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.pleth-waveform-block.wave-stable .pleth-svg path {
+  stroke: #10b981;
+  filter: drop-shadow(0 0 3px rgba(16, 185, 129, 0.8));
+}
+
+.pleth-waveform-block.wave-stable .waveform-status-badge {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.waveform-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.waveform-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+}
+
+.waveform-status-badge {
+  font-size: 0.55rem;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 3px;
+  letter-spacing: 0.3px;
+}
+
+.waveform-visual-container {
+  width: 100%;
+  overflow: hidden;
+  height: 32px;
+  position: relative;
+}
+
+.waveform-scroll-track {
+  display: flex;
+  width: 600px;
+  height: 100%;
+  animation: plethScroll 3s linear infinite;
+}
+
+.pleth-svg {
+  width: 600px;
+  height: 100%;
+}
+
+.pleth-svg path {
+  fill: none;
+  stroke-width: 2px;
+  stroke-linecap: round;
+}
+
+@keyframes plethScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-300px, 0, 0);
+  }
+}
+
+.resp-rate-block {
+  min-height: 65px;
+  justify-content: space-between;
+}
+
+/* Footer Expandido 3 Columnas */
+.card-expanded-footer {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr 1.1fr;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(248, 250, 252, 0.8);
+  border-top: 1px solid #f1f5f9;
+  align-items: center;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.col-label {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.ecg-status-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pulse-dot {
+  color: #10b981;
+  font-size: 0.75rem;
+  animation: flash 1s infinite alternate;
+}
+
+.col-val {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #334155;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-values {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #475569;
+  line-height: 1.3;
+}
+
+.hist-item {
+  white-space: nowrap;
+}
+
+.ia-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 4px 6px;
+  border-radius: 4px;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+}
+
+.ia-badge.risk-low {
+  background: #e6f4ea;
+  color: #137333;
+  border: 1px solid #ceead6;
+}
+
+.ia-badge.risk-high {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid rgba(185, 28, 28, 0.15);
+  animation: pulseBorder 1.5s infinite alternate;
+}
+
+@keyframes pulseBorder {
+  from {
+    box-shadow: 0 0 0 0px rgba(185, 28, 28, 0.2);
+  }
+  to {
+    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.2);
+  }
+}
+
+/* Alertas de Métricas en Card */
+.patient-card.metrics-alert {
+  box-shadow: 0 0 0 2px #fca5a5, 0 15px 30px rgba(185, 28, 28, 0.04);
+}
+
+.card-footer {
+  padding: 10px 20px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  background: #fdfdfd;
+}
+
+.connection-status {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.status-connected {
+  color: #10b981;
+}
+
+.status-disconnected {
+  color: #94a3b8;
+}
+
+.critical-revision-text {
+  color: #b91c1c;
+  font-weight: 800;
+  font-size: 0.7rem;
+  animation: flash 1s infinite alternate;
+}
+
+.critical-warning-badge {
+  background: #b91c1c;
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 800;
+  font-size: 0.65rem;
+  animation: flash 1s infinite alternate;
+}
+
+@keyframes pulseColor {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes flash {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Barra de Filtros de Triage - Estilo Figma */
+.triage-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0;
+  pointer-events: auto;
+}
+
+.filter-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-btn {
+  border: none;
+  background: transparent;
+  color: #64748b;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+}
+
+.filter-btn:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.filter-btn.active {
+  background: #1e293b;
+  color: #ffffff;
+  font-weight: 600;
+}

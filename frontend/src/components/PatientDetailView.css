@@ -1,0 +1,264 @@
+.patient-detail-container {
+  padding: 24px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  background-color: var(--color-bg-clinical);
+}
+
+.detail-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 16px;
+}
+
+.btn-back {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  color: #4b5563;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  background: #f3f4f6;
+  border-color: #cbd5e1;
+  color: #4b5563;
+}
+
+.detail-connection {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.detail-connection.connected {
+  color: #10b981;
+}
+
+.detail-connection.disconnected {
+  color: #94a3b8;
+}
+
+.patient-detail-card {
+  background: #f8fafc;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #e2e8f0;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.patient-main-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 16px;
+}
+
+.patient-main-info .patient-name {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #0f172a;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.patient-metadata {
+  display: flex;
+  gap: 20px;
+  margin-top: 4px;
+}
+
+.metadata-item {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.metadata-item strong {
+  color: #475569;
+}
+
+.patient-triage {
+  align-self: flex-start;
+  margin-top: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
+}
+
+.patient-triage.badge-critico {
+  background: #fee2e2;
+  color: #9a0002;
+  border: 1px solid rgba(154, 0, 2, 0.15);
+}
+
+.patient-triage.badge-urgente,
+.patient-triage.badge-semi_urgente {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid rgba(180, 83, 9, 0.15);
+}
+
+.patient-triage.badge-no_urgente {
+  background: #d1fae5;
+  color: #047857;
+  border: 1px solid rgba(4, 120, 87, 0.15);
+}
+
+.section-title {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.clinical-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.info-medical-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-sizing: border-box;
+}
+
+.info-icon {
+  color: #94a3b8;
+  flex-shrink: 0;
+  margin-top: 2px;
+  width: 18px;
+  height: 18px;
+}
+
+.info-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.info-value {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #1e293b;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.vital-detail-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 80px;
+  box-sizing: border-box;
+}
+
+.vital-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.vital-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.vital-trend {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #047857;
+}
+
+.vital-trend.trend-alert {
+  color: #9a0002;
+}
+
+.vital-value-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.vital-number-group {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.vital-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.vital-unit {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.vital-sparkline-box {
+  height: 24px;
+  width: 60px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.vital-sparkline {
+  overflow: visible;
+}
+
+.patient-detail-error {
+  text-align: center;
+  padding: 40px;
+  color: #64748b;
+}
