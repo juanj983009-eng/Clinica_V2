@@ -1,0 +1,134 @@
+version: '3.8'
+
+services:
+
+  # ── PostgreSQL 15 ────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: clinica2-postgres
+    environment:
+      POSTGRES_DB:       healthtech_db
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: admin_password_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_2:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d healthtech_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - clinica2-net
+
+  # ── Redis 7 ──────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: clinica2-redis
+    command: redis-server --save 60 1 --loglevel warning --requirepass redis_secret_2026
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data_2:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redis_secret_2026", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - clinica2-net
+
+  # ── Keycloak 24 (Identity & Access Management) ────────────────────────────────
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.5
+    container_name: clinica2-keycloak
+    command: start-dev --health-enabled=true
+    environment:
+      KEYCLOAK_ADMIN:          admin
+      KEYCLOAK_ADMIN_PASSWORD: admin_keycloak_2026
+    ports:
+      - "8085:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    # Healthcheck determinista mediante scripts de socket internos en puerto 8080
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080 && exec 3>&-' || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - clinica2-net
+
+  # ── Backend Spring Boot (API Gateway / Business Logic) ────────────────────────
+  healthtech-backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    image: clinica2/backend:latest
+    container_name: clinica2-backend
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_PROFILES_ACTIVE:     prod
+      SPRING_DATASOURCE_URL:      jdbc:postgresql://postgres:5432/healthtech_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin_password_2026
+      REDIS_HOST:                 redis
+      REDIS_PORT:                 6379
+      SPRING_DATA_REDIS_PASSWORD: redis_secret_2026
+      KEYCLOAK_ISSUER_URI:        http://keycloak:8080/realms/healthtech-realm
+      KEYCLOAK_JWK_SET_URI:       http://keycloak:8080/realms/healthtech-realm/protocol/openid-connect/certs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      keycloak:
+        # Garantiza que el IDP esté 100% listo para responder y entregar llaves JWKS antes de arrancar
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8082/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 45s
+    networks:
+      - clinica2-net
+
+  # ── Frontend React/Nginx (SPA client) ─────────────────────────────────────────
+  healthtech-frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    image: clinica2/frontend:latest
+    container_name: clinica2-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      healthtech-backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - clinica2-net
+
+# ── Volúmenes persistentes ────────────────────────────────────────────────────
+volumes:
+  postgres_data_2:
+    driver: local
+  redis_data_2:
+    driver: local
+
+# ── Red interna del stack ─────────────────────────────────────────────────────
+networks:
+  clinica2-net:
+    driver: bridge
+    name: clinica2-net
